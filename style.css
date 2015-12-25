@@ -1,0 +1,9 @@
+body{
+    background-color: black;
+}
+canvas{
+    background-image: url(./graphic/background.jpg);
+}
+#menu{
+    color: white
+}
