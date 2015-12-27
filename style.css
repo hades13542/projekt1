@@ -4,6 +4,15 @@ body{
 canvas{
     background-image: url(./graphic/background.jpg);
 }
+#canvas {
+    float: left;
+    margin-right: 100px;
+}
 #menu{
-    color: white
+    float: left;
+    color: white;
+}
+
+#wynik{
+    display: none;
 }

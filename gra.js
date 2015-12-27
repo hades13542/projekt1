@@ -17,7 +17,7 @@ var arrayPoint = [];
 var audio_control = null;
 var audio_src = null;
 var nspeed = 1000;
-
+var best = 0;
 function Point(x,y,color){
         this.x = x;
         this.y = y;
@@ -36,12 +36,7 @@ function Point(x,y,color){
         }
     }
 
-
-
-
-
-
-
+var worker = null;
 
 
 function onMouseOverHandle(x,y){
@@ -74,7 +69,7 @@ function onMouseOverHandle(x,y){
     }
     if (draw_mode == 1){
         //console.log(x,y);
-        if (x>w-20 && y>0 && x<w && y<20){
+        if (x>w-20 && y>0 && x<w+20 && y<20){
             ctx.fillStyle = "#FF0000";
             ctx.fillRect(w-20,0,20,20);
             ctx.fillStyle = "#000000";
@@ -105,6 +100,7 @@ function onClickHandle(x,y){
                 speed = 1000;
                 wynik = 0;
                 bonus = 0;
+                nspeed = 1000;
                 arrayPoint = [];
                 //console.log(audio_src.getAttribute("src"));
                 //console.log("weszlo");
@@ -135,13 +131,12 @@ function onClickHandle(x,y){
         if (count > 1) {
             bonus += (1000 * count);
         }
-        if (x>w-20 && y>0 && x<w && y<20){
+        if (x>w-20 && y>0 && x<w+20 && y<20){
             draw_mode = 0;
             audio_control.pause();
         }
     }
 }
-
 
 
 
@@ -178,6 +173,8 @@ function draw(){
     console.log(arrayPoint[arrayPoint.length-1].getY());*/
 
 }
+
+
 
 function draw_game(){
     ctx.clearRect(0,0,w,20);
@@ -217,8 +214,17 @@ function draw_game(){
     }
 
     if (spawned-clicked>=10 || (arrayPoint.length-1)>=10){
+        //console.log("worker in");
+        //worker.postMessage(wynik.toString());
+        //console.log("worker out");
         draw_mode = 0;
         draw_menu();
+        alert("Twoj wynik: "+ wynik.toString());
+        if(wynik>best){
+            best=wynik;
+        }
+        document.getElementById("wynik").style.display = "block";
+        document.getElementById("wynik").innerHTML = "Twoj najlepszy wynik w tej sesji: "+ best.toString()+"  (odswieżenie resetuje)";
         audio_control.pause();
     }
 }
@@ -284,7 +290,8 @@ window.onload = function(){
     }else{
         console.log("niedziala ctrlaudio");
     }
+
 };
 
-    //Ilosc FPS...
+//stary WebWorker do rysowania wszystkiego!
 setInterval(update,speed);

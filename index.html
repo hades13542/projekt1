@@ -7,17 +7,32 @@
     <script src="gra.js"></script>
 </head>
 <body>
-    <div id="menu">
-        <p>DZIALA W GOOGLE CHROME!</p>
-    </div>
     <div id="canvas">
         <canvas id="myCanvas" width="640" height="460" style="border:1px solid #000000;">
             Twoja przeglądarka nie obsługuje elementu canvas!
         </canvas>
     </div>
+    <article id="menu">
+        <header><h2>DZIALA TYLKO W GOOGLE CHROME!</h2></header>
+        <section><h4>
+            W widocznej obok grze należy zbijać za pomocą kliknięcia pojawiające się kółka.</h4><br>
+            Jeżeli na ekranie będzie jednocześnie 10 kółek gracz przegrywa.<br>
+            Gra przyśpiesza wraz z zdobywaniem punktów<br>
+            Kompleta dokumentacja dostępna jest po naciśnięciu klawisza "Instrukcja"<br>
+            Wykorzystywane są elementy &lt;canvas&gt; &lt;audio&gt;.<br>
+            Muzyka jest "jakakolwiek".<br>
+        </section>
+        <footer>
+            <p>Link do Bluemix, W3C HTML5 Validate, W3C CSS Validate</p>
+            <a href="http://atar1xti1.mybluemix.net/" ><img src="./graphic/bluemix.png"></a><a href="https://validator.w3.org/nu/?doc=http%3A%2F%2Fatar1xti1.mybluemix.net%2F"><img src="./graphic/valid_html5_blue.png"></a> <a href="http://jigsaw.w3.org/css-validator/validator?uri=http%3A%2F%2Fatar1xti1.mybluemix.net%2Fstyle.css">
+            <img src="http://jigsaw.w3.org/css-validator/images/vcss-blue" alt="Poprawny CSS!" /></a><br>
+            <p id="wynik"></p>
+        </footer>
+    </article>
         <audio id="audio_control" autoplay loop>
             <source id="audio_source" src="./audio/intro.mp3" type="audio/mpeg">
             Twoja przeglądarka nie obsługuje elementu audio!
         </audio>
+
 </body>
 </html>
