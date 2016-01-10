@@ -114,6 +114,7 @@ function onClickHandle(x,y){
                 wynik = 0;
                 bonus = 0;
                 nspeed = 1000;
+                arrayPoint = [];
                 audio_src.src = "./audio/gra.mp3";
                 audio_control.load();
             }
