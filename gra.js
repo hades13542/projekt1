@@ -1,6 +1,9 @@
 /**
  * Created by Atar1x on 2015-12-23.
  */
+/*
+* Deklaracja potrzebnych zmiennych liczników itd.
+* */
 var draw_mode = 0;
 var canvas = null;
 var ctx = null;
@@ -12,12 +15,15 @@ var spawned = 0;
 var speed = 1000;
 var wynik = 0;
 var bonus=0;
-//Klasa i tablica z Punktami.
 var arrayPoint = [];
 var audio_control = null;
 var audio_src = null;
 var nspeed = 1000;
 var best = 0;
+
+/*
+ * Klasa służaca do przechowywania punktu w którym pojawia się koło oraz jego koloru
+ * */
 function Point(x,y,color){
         this.x = x;
         this.y = y;
@@ -35,13 +41,14 @@ function Point(x,y,color){
             return color;
         }
     }
-
-var worker = null;
-
-
+/*
+ * Funkcja która obsługuje akcję gdy kursor myszki znajduje się nad elementem <canvas>
+ *     w zależności od draw_mode ma różne funkcje
+ *     * draw_mode 0 : funkcja obsługuje zmiane koloru przycisku po najechaniu
+ *     * draw_mode 1 : funkcja obsluguje zmiane koloru przycisku wyjscia z gry po najechaniu
+ * */
 function onMouseOverHandle(x,y){
     if (draw_mode == 0){
-        //console.log(x,y);
         //Start Button!
         if (x>w/2-150 && y>h/2-20 && x<w/2+150 && y<h/2+20){
             ctx.fillStyle = "#0000FF";
@@ -68,7 +75,6 @@ function onMouseOverHandle(x,y){
         }
     }
     if (draw_mode == 1){
-        //console.log(x,y);
         if (x>w-20 && y>0 && x<w+20 && y<20){
             ctx.fillStyle = "#FF0000";
             ctx.fillRect(w-20,0,20,20);
@@ -83,8 +89,15 @@ function onMouseOverHandle(x,y){
     }
 }
 
+/*
+ * Funkcja która obsługuje kliknięcia na elemencie canvas
+ * dodatkowo dba o kontrolę zmiany tempa gry wraz z postępem
+ * dla odpowiedniego draw mode ma odpowiednie funkcje
+ *  *draw_mode 0 po kliknieciu w przycisk nowej gry resetuje ustawienia gry, zmienia muzykę, po kliknieciu w przycisk Instrukcja wyswietla dokumentacje.
+ *  *draw_mode 1 obsługue kliknięcia na kółka, powoduje ich znikanie, naliczanie punktów, zliczanie kliknięć i innych zmiennych które są wykorzystywane do obliczania wyniku.
+ * */
+
 function onClickHandle(x,y){
-    //console.log("Click")
     if (nspeed != speed) {
         console.log("zmiana speed");
         setInterval(update, nspeed);
@@ -101,16 +114,12 @@ function onClickHandle(x,y){
                 wynik = 0;
                 bonus = 0;
                 nspeed = 1000;
-                arrayPoint = [];
-                //console.log(audio_src.getAttribute("src"));
-                //console.log("weszlo");
                 audio_src.src = "./audio/gra.mp3";
                 audio_control.load();
-                //console.log(audio_src.getAttribute("src"));
             }
 
             if (x>w/2-150 && y>h/2-20+50 && x<w/2+150 && y<h/2+20+50) {
-                window.open("http://www.w3schools.com");
+                window.open("dokumentacja.pdf");
                 audio_control.pause();
             }
     }
@@ -138,9 +147,9 @@ function onClickHandle(x,y){
     }
 }
 
-
-
-//Losowy Kolor
+/*
+ * Funkcja która służy do losowania koloru
+ * */
 function getRandomColor() {
     var letters = '0123456789ABCDE'.split('');
     var color = '#';
@@ -150,7 +159,9 @@ function getRandomColor() {
     return color;
 }
 
-//Rysowanie 1 koła
+/*
+ * Funkcja która służy do rysowania koła o promieniu 40 pixeli na zadanych wspołrzednych i o zadanym kolorze
+ * */
 function draw_circle(x,y,color){
     ctx.beginPath();
     ctx.fillStyle = color;
@@ -160,6 +171,10 @@ function draw_circle(x,y,color){
     ctx.closePath();
 }
 
+/*
+ * Funkcja która służy do losowania współrzędnych oraz koloru, oraz dodaje punkty do tablicy.
+ * */
+
 function draw(){
     var x = Math.floor(Math.random() * (w-40 - 40 + 1)) + 40;
     var y = Math.floor(Math.random() * (h-40 - 65 + 1)) + 65;
@@ -168,14 +183,12 @@ function draw(){
     arrayPoint.push(temp);
     spawned++;
     delete temp;
-   /* console.log(arrayPoint.length);
-    console.log(arrayPoint[arrayPoint.length-1].getX());
-    console.log(arrayPoint[arrayPoint.length-1].getY());*/
 
 }
 
-
-
+/*
+ * Funkcja która odpowiada za rysowanie interfejsu w grze, ustala warunki zmiany szybkości, ustala warunek przegranej oraz wyswietla wynik gry i zatrzymuje muzykę.
+ * */
 function draw_game(){
     ctx.clearRect(0,0,w,20);
     ctx.fillStyle = "#000000";
@@ -190,7 +203,7 @@ function draw_game(){
     ctx.fillRect(w-20,0,20,20);
     ctx.fillStyle = "#FFFFFF";
     ctx.fillText("X",w-20+3,17);
-    //console.log(bonus);
+    //Zmiana szybkości
     if (clicked > 20 ) {
         nspeed=999;
     }
@@ -212,11 +225,8 @@ function draw_game(){
     if (clicked > 150 ) {
         nspeed=993;
     }
-
+    //warunek przegranej
     if (spawned-clicked>=10 || (arrayPoint.length-1)>=10){
-        //console.log("worker in");
-        //worker.postMessage(wynik.toString());
-        //console.log("worker out");
         draw_mode = 0;
         draw_menu();
         alert("Twoj wynik: "+ wynik.toString());
@@ -228,7 +238,9 @@ function draw_game(){
         audio_control.pause();
     }
 }
-
+/*
+ * Funkcja która rysuje menu zaraz po załadowaniu strony
+ * */
 function draw_menu(){
     ctx.fillStyle = "#FF0000";
     ctx.fillRect(w/2-150,h/2-20,300,40);
@@ -239,16 +251,19 @@ function draw_menu(){
     ctx.fillStyle = "#000000";
     ctx.fillText("Instrukcja!",w/2-40,h/2+5+50);
 }
-//renderowanie
+/*
+ * Funkcja która służy do rysowania wszystkich okręgów znajdujących się w tablicy
+ * */
 function draw__all_circles() {
     for(var i=0; i<arrayPoint.length;i++){
         draw_circle(arrayPoint[i].getX(),arrayPoint[i].getY(),arrayPoint[i].getColor());
     }
 }
 
-//Update jak w unity.
+/*
+ * Funkcja która jest wywoływana co klatkę zbiera wszystkie pomniejsze funkcje rysujące i odpowiadające za grę
+ * */
 function update(){
-   // console.log(speed,nspeed);
     if (draw_mode == 0){
 
     }
@@ -261,7 +276,9 @@ function update(){
 }
 
 
-//Inicjalizacja canvasu!
+/*
+ * Funkcja która służy inicjalizacji <canvas>, obsługi mouseEvent oraz <audio>
+ * */
 window.onload = function(){
     canvas = document.getElementById("myCanvas");
     if (canvas == null) {
@@ -293,5 +310,7 @@ window.onload = function(){
 
 };
 
-//stary WebWorker do rysowania wszystkiego!
+/*
+ * Funkcja która zapewnia animację gry
+ * */
 setInterval(update,speed);
